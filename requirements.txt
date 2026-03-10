@@ -1,4 +1,4 @@
 requests==2.32.3
 azure-storage-blob==12.22.0
 azure-functions==1.20.0
-pyodbc
+pyodbc==5.1.0
