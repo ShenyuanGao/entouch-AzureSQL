@@ -321,8 +321,7 @@ def process_alert_for_controller(cursor, detail_json):
         return
 
     if is_online is False:
-        logging.info("Skipping offline controller %s", controller_id)
-        return
+        logging.warning("Controller %s is offline, but temperature alert evaluation will continue", controller_id)
 
     status, temp_c, heat_c, cool_c = evaluate_status(temp_f, heat_f, cool_f)
 
