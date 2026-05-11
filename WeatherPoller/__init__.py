@@ -44,7 +44,16 @@ def main(mytimer) -> None:
         data = response.json()
 
         outdoor_temp_c = data.get("current", {}).get("temperature_2m")
-        weather_time = data.get("current", {}).get("time")
+
+        weather_time_raw = data.get("current", {}).get("time")
+
+        if weather_time_raw:
+            weather_time = datetime.datetime.strptime(
+                weather_time_raw,
+                "%Y-%m-%dT%H:%M"
+            )
+        else:
+            weather_time = None
 
         logging.info(
             "Outdoor temp from Open Meteo: %s C at %s",
@@ -85,11 +94,13 @@ def main(mytimer) -> None:
     except Exception:
         if conn:
             conn.rollback()
+
         logging.exception("Failed to pull or insert weather data")
         raise
 
     finally:
         if cursor:
             cursor.close()
+
         if conn:
             conn.close()
